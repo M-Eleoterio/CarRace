@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        body {
+            width: 100%;
+            height: 1000vh;
+            overflow: hidden;
+            background: linear-gradient(180deg, #3a5a40, #588157, #3a5a40);
+            color: white;
+            animation: changeGradient 0.1s linear infinite;
+            transition: 0.5s ease-in-out;
+
+        }
+
+        .container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        @keyframes changeGradient {
+            0% {
+                background: linear-gradient(180deg, #3a5a40, #588157, #3a5a40);
+            }
+
+            100% {
+                background: linear-gradient(180deg, #588157, #3a5a40, #588157);
+
+            }
+        }
+
+        #game {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .track {
+            width: 150px;
+            height: 100vh;
+            background-color: gray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 150px;
+            background: url(Media/images/1780972_tekstura-dorogi.jpg);
+            background-position: center;
+            background-size: contain;
+            animation: moveBackground 1.1s linear infinite;
+        }
+
+        #car {
+            width: 70px;
+            height: 100px;
+            position: relative;
+            top: 200px;
+        }
+
+        #car::before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            top: -60%;
+            left: -100%;
+            background: url(Media/images/volkswagen_2.png);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: rotateZ(90deg);
+        }
+
+        #menu {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background-color: #c1121f;
+            padding: 30px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            border-radius: 3px;
+            border: 3px solid white;
+            z-index: 1001;
+        }
+
+        #menu div {
+            background-color: #ffffff52;
+            padding: 5px;
+            width: 200px;
+            text-align: center;
+            border: 1px solid white;
+            border-radius: 3px;
+        }
+
+        #btnPause {
+            color: transparent;
+            background-color: transparent;
+            border: none;
+            border-left: 7px solid white;
+            border-right: 7px solid white;
+            width: 18px;
+            height: 22px;
+            outline: none;
+        }
+
+        .gas {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: orangered;
+            top: 0;
+            background: url(Media/images/5_88.png) no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        .star,
+        .hole,
+        .wall {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 0;
+        }
+
+        .wall {
+            width: 140px;
+            height: 50px;
+            background-color: brown;
+            background: url(Media/images/stone-brick-wall-red-scratches-00353.jpg);
+            background-position: center;
+            background-size: contain;
+            z-index: 99;
+            transform-style: preserve-3d;
+            transform: rotateX(45deg);
+        }
+
+        .star {
+            background-color: yellow;
+            background: url(Media/images/star-icon.png);
+            background-position: center;
+            background-size: contain;
+        }
+
+        .hole {
+            border-radius: 50%;
+            background-color: black;
+            background: url(Media/images/bullet_hole_PNG6051.png);
+            background-position: center;
+            background-size: contain;
+        }
+
+        #lbForm {
+            background-color: #970a0a;
+            width: 400px;
+            height: 400px;
+            padding: 20px;
+            border-radius: 3px;
+            border: 2px solid white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        #lbBtn {
+            width: 200px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 700;
+            background-color: rgba(0, 0, 0, 0.307);
+            padding: 15px;
+            border-radius: 3px;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: 0.1s ease-in-out;
+        }
+
+        #lbBtn:hover {
+            transform: scale(1.1);
+        }
+
+        #lbInput {
+            width: 300px;
+            height: 20px;
+            background-color: white;
+            border-radius: 3px;
+            border: 2px solid black;
+            padding: 10px;
+            outline: none;
+            transition: 0.1s ease-in-out;
+        }
+
+        #lbInput:focus {
+            transform: scale(1.1);
+            background-color: rgba(0, 0, 0, 0.483);
+            color: white;
+            border: 2px solid white;
+        }
+
+        #menuPause {
+            display: flex;
+            position: absolute;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            font-size: 50px;
+            background-color: rgba(0, 0, 0, 0.514);
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+
+        }
+
+        #chess {
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, black 10%, white 10%, white 20%, black 20%, black 30%, white 30%, white 40%, black 40%, black 50%,
+                    white 50%, white 60%, black 60%, black 70%, white 70%, white 80%, black 80%, black 90%, white 90%, white 100%);
+            position: absolute;
+            top: 0;
+            right: 100px;
+        }
+
+        #chess2 {
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, white 10%, black 10%, black 20%, white 20%, white 30%, black 30%, black 40%, white 40%, white 50%,
+                    black 50%, black 60%, white 60%, white 70%, black 70%, black 80%, white 80%, white 90%, black 90%, black 100%);
+            position: absolute;
+            top: 0;
+            right: 200px;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                background-position-y: -100%;
+            }
+
+            100% {
+                background-position-y: 0%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <audio id="bgSound" loop>
+        <source src="Media/sound/background.mp3">
+    </audio>
+    <audio id="crashSound">
+        <source src="Media/sound/crash.mp3">
+    </audio>
+    <audio id="curveSound">
+        <source src="Media/sound/curve.mp3">
+    </audio>
+    <audio id="finishSound">
+        <source src="Media/sound/finish.mp3">
+    </audio>
+
+    <div id="menuPause">PAUSE</div>
+
+    <div class="container">
+        <div id="menu">
+            <div id="fuel_counter"></div>
+            <div id="star_counter"></div>
+            <div id="time_counter"></div>
+            <button onclick="changePause()" id="btnPause"></button>
+            <p>Pause</p>
+        </div>
+        <div id="game">
+            <div class="track" id="track_1"></div>
+            <div class="track" id="track_2">
+                <div id="car"></div>
+            </div>
+            <div class="track" id="track_3"></div>
+        </div>
+    </div>
+
+    
+    <script src="Media/JQuery/jquery-2.2.0.js"></script>
+    <script src="Media/JQuery/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script>
+        const bgSound = $("#bgSound")[0];
+        const crashSound = $("#crashSound")[0];
+        const curveSound = $("#curveSound")[0];
+        const finishSound = $("#finishSound")[0];
+
+        bgSound.play();
+
+        const car = $("#car");
+        let track = 2;
+        let fuel = 10;
+        let time = 0;
+        let stars = 0;
+
+        let pause = false;
+
+        $("#fuel_counter").html(`Fuel left: ${fuel}`);
+        $("#star_counter").html(`Stars taken: ${stars}`);
+        $("#time_counter").html(`Time elapsed: ${time}`);
+        $("#menuPause").hide();
+
+        const menuInterval = setInterval(() => {
+            if (!pause) {
+                if (fuel > 0) {
+                    fuel--;
+                    time++;
+                    $("#fuel_counter").html(`Fuel left: ${fuel}`);
+                    $("#star_counter").html(`Stars taken: ${stars}`);
+                    $("#time_counter").html(`Time elapsed: ${time}`);
+                } else {
+                    gameOver();
+                    bgSound.volume = 0.0;
+                    finishSound.play();
+                }
+            }
+        }, 1000);
+
+        //keyboard controls
+        $(document).on('keydown', (e) => {
+            if (!pause) {
+                if (e.keyCode == 37 && track > 1) {
+                    track--;
+                    car.remove();
+                    curveSound.play();
+                    $(`#track_${track}`).append(car);
+                } else if (e.keyCode == 39 && track < 3) {
+                    track++;
+                    car.remove();
+                    curveSound.play();
+                    $(`#track_${track}`).append(car);
+                }
+            }
+            if (e.keyCode == 32) {
+                changePause();
+            }
+        })
+
+        function genGas() {
+            const gas = $("<div>").addClass("gas");
+            const randomTrack = Math.floor(Math.random() * 3) + 1;
+
+            $(`#track_${randomTrack}`).append(gas);
+            let gasTop = 0;
+
+            const gasInterval = setInterval(() => {
+                if (!pause) {
+                    gasTop += 5;
+                    gas.css('top', `${gasTop}px`);
+                    if (gasTop > 1000) gas.remove();
+                    if (isColiding(gas, car)) {
+                        gas.remove();
+                        fuel += 10;
+                        $("#fuel_counter").html(`Fuel left: ${fuel}`);
+                    }
+                }
+            }, 8);
+        }
+        function genStar() {
+            const star = $("<div>").addClass("star");
+            const randomTrack = Math.floor(Math.random() * 3) + 1;
+
+            $(`#track_${randomTrack}`).append(star);
+            let starTop = 0;
+
+            const starInterval = setInterval(() => {
+                if (!pause) {
+                    starTop += 5;
+                    star.css('top', `${starTop}px`);
+                    if (starTop > 1000) star.remove();
+                    if (isColiding(star, car)) {
+                        star.remove();
+                        stars++;
+                        $("#star_counter").html(`Stars taken: ${stars}`);
+                    }
+                }
+            }, 8);
+        }
+        function genWall() {
+            const wall = $("<div>").addClass("wall");
+            const randomTrack = Math.floor(Math.random() * 3) + 1;
+
+            $(`#track_${randomTrack}`).append(wall);
+            let wallTop = 0;
+
+            const wallInterval = setInterval(() => {
+                if (!pause) {
+                    wallTop += 5;
+                    wall.css('top', `${wallTop}px`);
+                    if (wallTop > 1000) wall.remove();
+                    if (isColiding(wall, car)) {
+                        wall.remove();
+                        bgSound.volume = 0.0;
+                        crashSound.play();
+                        gameOver();
+                    }
+                }
+            }, 8);
+        }
+        function genHole() {
+            const hole = $("<div>").addClass("hole");
+            const randomTrack = Math.floor(Math.random() * 3) + 1;
+
+            $(`#track_${randomTrack}`).append(hole);
+            let holeTop = 0;
+
+            const holeInterval = setInterval(() => {
+                if (!pause) {
+                    holeTop += 5;
+                    hole.css('top', `${holeTop}px`);
+                    if (holeTop > 1000) hole.remove();
+                    if (isColiding(hole, car)) {
+                        hole.remove();
+                        bgSound.volume = 0.0;
+                        crashSound.play();
+                        gameOver();
+                    }
+                }
+            }, 8);
+        }
+
+        const genGasInterval = setInterval(() => {
+            if (!pause) {
+                genGas();
+            }
+        }, Math.floor(Math.random() * 6000) + 1000);
+        const genStarInterval = setInterval(() => {
+            if (!pause) {
+                genStar();
+            }
+        }, Math.floor(Math.random() * 6000) + 1000);
+        const genWallInterval = setInterval(() => {
+            if (!pause) {
+                genWall();
+            }
+        }, Math.floor(Math.random() * 6000) + 1000);
+        const genHoleInterval = setInterval(() => {
+            if (!pause) {
+                genHole();
+            }
+        }, Math.floor(Math.random() * 6000) + 1000);
+
+        function isColiding(obj, car) {
+            const objRect = obj[0].getBoundingClientRect()
+            const carRect = car[0].getBoundingClientRect()
+
+            return (
+                objRect.left < carRect.right &&
+                objRect.right > carRect.left &&
+                objRect.top < carRect.bottom &&
+                objRect.bottom > carRect.top
+            )
+        }
+
+        function changePause() {
+            pause = !pause;
+            if (pause) {
+                $('body').css('animation', 'none')
+                $('.track').css('animation', 'none')
+            } else {
+                $('.track').css('animation', 'moveBackground 1.1s linear infinite')
+                $('body').css('animation', 'changeGradient 0.1s linear infinite')
+            }
+            $("#menuPause").toggle()
+        }
+
+        function gameOver() {
+            alert("Game Over!");
+
+            $("body").css('animation', 'none');
+            $("body").css('background', '#ef233c');
+
+            clearInterval(menuInterval);
+            clearInterval(genGasInterval);
+            clearInterval(genHoleInterval);
+            clearInterval(genStarInterval);
+            clearInterval(genWallInterval);
+            $("#game").remove();
+            $("#menu").remove();
+
+            const form = $("<form>").attr("id", 'lbForm');
+            const h1 = $("<h1>Game Over!</h1>").attr('id', 'lbTitle');
+            const input = $("<input>").attr("id", 'lbInput').attr("placeholder", 'Insert your nickname...');
+            const btn = $("<input>").attr("id", 'lbBtn').attr('type', 'submit').attr('value', 'Continue');
+
+            form.append(h1);
+            form.append(input);
+            form.append(btn);
+
+            form.on("submit", (e) => {
+                e.preventDefault();
+
+                if (!input.val().trim()) {
+                    input.css('border', '2px solid red');
+                    input.effect('shake');
+                    setTimeout(() => {
+                    input.css('border', '2px solid black');
+                    }, 1000);
+                    return;
+                }
+
+                const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+                const min = String(Math.floor(time / 60)).padStart(2, '0');
+                const remSecs = String(Math.floor(time % 60)).padStart(2, '0');
+
+                leaderboard.push({
+                    nick: input.val(),
+                    points: stars,
+                    time: `${min}:${remSecs}`
+                });
+
+                localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+                location.href = "leaderboard.html"
+            })
+
+            $(".container").append(form);
+
+        }
+    </script>
+
+</body>
+
+</html>

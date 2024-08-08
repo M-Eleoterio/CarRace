@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+
+    <style>
+        * {
+            transition: 0.1s ease-in-out;
+        }
+
+        body {
+            background-color: #c1121f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            font-family: sans-serif;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        table {
+            background-color: #00000065;
+            border-radius: 3px;
+            padding: 20px;
+            border: 2px solid white;
+            width: 500px;
+            text-align: center;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.393);
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        td {
+            border: rgba(255, 255, 255, 0.33) solid 1px;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        td:hover {
+            transform: scale(1.1);
+        }
+
+        #btns {
+            display: flex;
+            gap: 30px;
+        }
+
+        .btn {
+            width: 200px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 700;
+            background-color: rgba(0, 0, 0, 0.307);
+            padding: 15px;
+            border-radius: 3px;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        #logo {
+            width: 500px;
+            filter: drop-shadow(0px 0px 5px black);
+        }
+
+        #chess {
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, black 10%, white 10%, white 20%, black 20%, black 30%, white 30%, white 40%, black 40%, black 50%,
+                    white 50%, white 60%, black 60%, black 70%, white 70%, white 80%, black 80%, black 90%, white 90%, white 100%);
+            position: absolute;
+            top: 0;
+            right: 100px;
+        }
+
+        #chess2 {
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, white 10%, black 10%, black 20%, white 20%, white 30%, black 30%, black 40%, white 40%, white 50%,
+                    black 50%, black 60%, white 60%, white 70%, black 70%, black 80%, white 80%, white 90%, black 90%, black 100%);
+            position: absolute;
+            top: 0;
+            right: 200px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <img src="Media/Logo/Superrace_logo.png" alt="" id="logo">
+    <table>
+        <thead>
+            <tr>
+                <th>Nick</th>
+                <th>Stars</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="lbBody"></tbody>
+    </table>
+
+    <div id="btns">
+        <a class="btn" href="game.html">Play again!</a>
+        <a class="btn" href="index.html">Home</a>
+    </div>
+
+    <div id="chess"></div>
+    <div id="chess2"></div>
+
+    <script src="Media/JQuery/jquery-2.2.0.js"></script>
+    <script>
+        const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+        leaderboard.sort((a, b) => b.points - a.points)
+
+        leaderboard.forEach(lb => {
+            $("#lbBody").append(`
+                <tr>
+                    <td>${lb.nick}</td>
+                    <td>${lb.points}</td>
+                    <td>${lb.time}</td>
+                </tr>
+            `)
+        });
+    </script>
+
+</body>
+
+</html>

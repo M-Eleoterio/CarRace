@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperRace</title>
+
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #c1121f;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        #how_to_play {
+            width: 1000vw;
+            height: 1000vh;
+            background-color: rgba(0, 0, 0, 0.227);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #competitor {
+            width: 1000vw;
+            height: 1000vh;
+            background-color: rgba(0, 0, 0, 0.227);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #competitor_content {
+            background-color: #970a0a;
+            padding: 20px;
+            border-radius: 3px;
+            border: 2px solid white;
+            text-align: center;
+        }
+
+        #how_to_play ul {
+            background-color: #970a0a;
+            padding: 20px;
+            border-radius: 3px;
+            border: 2px solid white;
+            text-align: center;
+            list-style-type: none;
+        }
+
+        #logo {
+            width: 900px;
+            margin-bottom: 60px;
+            filter: drop-shadow(0px 0px 5px rgb(0, 0, 0));
+            margin-left: 20px;
+        }
+
+        #menu {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            left: -10px;
+            top: 100px;
+            gap: 20px;
+        }
+
+        .btn {
+            width: 200px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 700;
+            background-color: rgba(0, 0, 0, 0.307);
+            padding: 15px;
+            border-radius: 3px;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: 0.1s ease-in-out;
+        }
+
+        .btn:hover {
+            padding-left: 30px;
+        }
+
+        .closeBtn {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            font-size: 60px;
+            font-weight: 900;
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: 0.1s ease-in-out;
+        }
+
+        .closeBtn:hover {
+            scale: 1.1;
+        }
+
+        #chess {
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, black 10%, white 10%, white 20%, black 20%, black 30%, white 30%, white 40%, black 40%, black 50%,
+            white 50%, white 60%, black 60%, black 70%, white 70%, white 80%, black 80%, black 90%, white 90%, white 100%);
+            position: absolute;
+            top: 0;
+            right: 100px;
+        }
+        #chess2 {
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, white 10%, black 10%, black 20%, white 20%, white 30%, black 30%, black 40%, white 40%, white 50%,
+            black 50%, black 60%, white 60%, white 70%, black 70%, black 80%, white 80%, white 90%, black 90%, black 100%);
+            position: absolute;
+            top: 0;
+            right: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="menu">
+            <img src="Media/Logo/Superrace_logo.png" alt="" id="logo">
+            <a href="game.html" class="btn">Play!</a>
+            <a href="leaderboard.html" class="btn">Leaderboard</a>
+            <a class="btn" onclick="toggleHTP()">How to Play</a>
+            <a" class="btn" onclick="toggleComp()">Competitor</a>
+        </div>
+        <div id="how_to_play">
+            <button class="closeBtn" onclick="toggleHTP()">X</button>
+            <ul>
+                <li>1. Move the car using the arrows keys;</li>
+                <li>2. The timer present the time lapsed;</li>
+                <li>3. The fuel counter show the remain gasoline;</li>
+                <li>4. During the run, the car need to avoid the holes or walls that are presented in the track. If the
+                    car</li>
+                <li>hit a hole or a wall, the game is over;</li>
+                <li>5. During the run, the car need to collect gasoline and stars in the track;</li>
+                <li>6. You can pause the game clicking in a button pause, or pressing the space bar.</li>
+                <li>7. Go beyond all limits;</li>
+                <li>Run in SuperRace Championship...</li>
+            </ul>
+        </div>
+
+        <div id="competitor">
+            <button class="closeBtn" onclick="toggleComp()">X</button>
+            <div id="competitor_content">
+                <h1>Miguel ELEOTÉRIO Vieira</h1>
+                <h2>SENAI Londrina</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="chess"></div>
+    <div id="chess2"></div>
+
+    <script src="Media/JQuery/jquery-2.2.0.js"></script>
+    <script src="Media/JQuery/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script>
+        $("#how_to_play").toggle();
+        $("#competitor").toggle();
+        $("#competitor_content").toggle();
+
+        function toggleHTP() {
+            $("#how_to_play").toggle('fold', 1000)
+        }
+        function toggleComp() {
+            $("#competitor").toggle('fade', 1000)
+            $("#competitor_content").toggle('fold', 1000)
+        }
+
+    </script>
+</body>
+
+</html>
